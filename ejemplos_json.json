@@ -1,0 +1,63 @@
+[
+  {
+    "device_id": "sensor_01",
+    "type": "interior",
+    "temperature": 23.7,
+    "humidity": 52,
+    "light": 340,
+    "unit": "C",
+    "location": "Sala 1",
+    "timestamp": "2025-01-15T14:32:18.123456+00:00"
+  },
+  {
+    "device_id": "sensor_03",
+    "type": "interior",
+    "temperature": 21.3,
+    "humidity": 45,
+    "light": 280,
+    "unit": "C",
+    "location": "Oficina A",
+    "timestamp": "2025-01-15T14:32:23.456789+00:00"
+  },
+  {
+    "device_id": "sensor_05",
+    "type": "interior",
+    "temperature": 25.1,
+    "humidity": 58,
+    "light": 420,
+    "unit": "C",
+    "location": "Sala 2",
+    "timestamp": "2025-01-15T14:32:28.789012+00:00"
+  },
+  {
+    "device_id": "sensor_02",
+    "type": "exterior",
+    "temperature": 78.3,
+    "light": 850,
+    "uv_index": 6.4,
+    "unit": "F",
+    "location": "Patio",
+    "timestamp": "2025-01-15T14:32:18.123456+00:00"
+  },
+  {
+    "device_id": "sensor_04",
+    "type": "exterior",
+    "temperature": 82.1,
+    "light": 920,
+    "uv_index": 7.8,
+    "unit": "F",
+    "location": "Jardín",
+    "timestamp": "2025-01-15T14:32:23.456789+00:00"
+  },
+  {
+    "device_id": "sensor_06",
+    "type": "exterior",
+    "temperature": 75.6,
+    "light": 680,
+    "uv_index": 4.2,
+    "unit": "F",
+    "location": "Terraza",
+    "timestamp": "2025-01-15T14:32:28.789012+00:00"
+  }
+]
+

@@ -1,0 +1,128 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    DIAGRAMA DE FLUJO DEL SISTEMA IoT-MongoDB
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CAPA DE GENERACIÓN DE DATOS                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                    ┌──────────────────────────────┐
+                    │   Sensor Simulator           │
+                    │   (sensor_simulator.py)      │
+                    │                              │
+                    │  ┌────────────────────────┐  │
+                    │  │ Sensores Interiores    │  │
+                    │  │ - temperature (°C)     │  │
+                    │  │ - humidity (%)         │  │
+                    │  │ - light (lux)          │  │
+                    │  └────────────────────────┘  │
+                    │                              │
+                    │  ┌────────────────────────┐  │
+                    │  │ Sensores Exteriores    │  │
+                    │  │ - temperature (°F)     │  │
+                    │  │ - light (lux)          │  │
+                    │  │ - uv_index            │  │
+                    │  └────────────────────────┘  │
+                    └──────────────┬───────────────┘
+                                   │
+                                   │ Genera lecturas JSON
+                                   │ con random y datetime
+                                   │ (cada 5 segundos)
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │      Formato JSON            │
+                    │                              │
+                    │  {                           │
+                    │    "device_id": "sensor_01", │
+                    │    "type": "interior",       │
+                    │    "temperature": 23.7,      │
+                    │    "humidity": 52,           │
+                    │    "light": 340,             │
+                    │    "unit": "C",              │
+                    │    "location": "Sala 1",     │
+                    │    "timestamp": "2025-..."   │
+                    │  }                           │
+                    └──────────────┬───────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CAPA DE PROCESAMIENTO                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │   Python Service             │
+                    │   (send_to_mongo.py)         │
+                    │                              │
+                    │  • Recibe lecturas JSON      │
+                    │  • Valida estructura         │
+                    │  • Establece conexión        │
+                    │    MongoDB Atlas (pymongo)   │
+                    │  • Inserta con insert_one()  │
+                    │  • Registra en consola       │
+                    └──────────────┬───────────────┘
+                                   │
+                                   │ Conexión segura TLS/SSL
+                                   │ String URI MongoDB Atlas
+                                   ▼
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CAPA DE ALMACENAMIENTO                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                    ┌──────────────────────────────┐
+                    │   MongoDB Atlas               │
+                    │   (Cloud Database)            │
+                    │                              │
+                    │  Base de datos: iot_data     │
+                    │  Colección: sensor_readings   │
+                    │                              │
+                    │  ┌────────────────────────┐  │
+                    │  │ Documentos BSON        │  │
+                    │  │ (Binary JSON)          │  │
+                    │  │                        │  │
+                    │  │ • Esquema flexible     │  │
+                    │  │ • Índices automáticos  │  │
+                    │  │ • Escalabilidad        │  │
+                    │  │   horizontal           │  │
+                    │  └────────────────────────┘  │
+                    └──────────────┬───────────────┘
+                                   │
+                                   │ Consultas y agregaciones
+                                   ▼
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CAPA DE ANÁLISIS Y CONSULTAS                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                    ┌──────────────────────────────┐
+                    │   Analysis Layer             │
+                    │   (queries.py)               │
+                    │                              │
+                    │  • Últimos N registros       │
+                    │  • Promedios por tipo        │
+                    │  • Filtros por ubicación     │
+                    │  • Agregaciones complejas    │
+                    │  • Conteos y estadísticas    │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │   Performance Metrics        │
+                    │   (metrics.py)               │
+                    │                              │
+                    │  • Latencia de inserción     │
+                    │  • Tiempo de consultas       │
+                    │  • Throughput (ops/seg)      │
+                    │  • Estadísticas (p95, p99)   │
+                    └──────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+                              FLUJO DE DATOS
+═══════════════════════════════════════════════════════════════════════════════
+
+  Generación → JSON → Validación → MongoDB Atlas → Consultas → Análisis
+     (IoT)      (Formato)  (Service)    (Almacenamiento)  (Queries)  (Metrics)
+
+═══════════════════════════════════════════════════════════════════════════════
+
